@@ -8,10 +8,11 @@
 import SwiftUI
 
 struct ContentView: View {
-	
+
 	@State var isSpeakerActive = false
 	@State var isVideoActive = true
 	@State var isMuteActive = false
+	@State var isEndCallActive = true
 
 	var body: some View {
 		ZStack {
@@ -27,24 +28,29 @@ struct ContentView: View {
 
 				HStack(spacing: 24) {
 					CallControlButton(
+						title: "speaker",
 						imageName: "speaker",
 						isActive: $isSpeakerActive
 					)
 
 					CallControlButton(
+						title: "video",
 						imageName: "video",
 						isActive: $isVideoActive
 					)
 
 					CallControlButton(
+						title: "mute",
 						imageName: "mute",
 						isActive: $isMuteActive
 					)
 
-					CallButton(
+					CallControlButton(
+						title: "end call",
 						imageName: "end",
 						backgroundColor: Color.red,
-						foregroundColor: Color.white
+						foregroundColor: Color.white,
+						isActive: $isEndCallActive
 					)
 				}
 			}

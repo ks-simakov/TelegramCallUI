@@ -9,27 +9,30 @@ import SwiftUI
 
 struct CallButton: View {
 
+	let title: String
 	let imageName: String
 	let backgroundColor: Color
 	let foregroundColor: Color
 
 	var body: some View {
-		ZStack {
-			imageView
-				.padding(4)
-				.background(background)
-				.clipShape(Circle())
-				.reverseMask({
-					imageView
-				})
+		VStack {
+			ZStack {
+				imageView
+					.padding(4)
+					.background(background)
+					.clipShape(Circle())
+					.reverseMask({
+						imageView
+					})
 
-			imageView
-				.renderingMode(.template)
-				.foregroundColor(foregroundColor)
+				imageView
+					.renderingMode(.template)
+					.foregroundColor(foregroundColor)
+			}
 		}
 	}
 
-	var imageView: Image {
+	private var imageView: Image {
 		Image(imageName)
 	}
 
@@ -40,24 +43,32 @@ struct CallButton: View {
 
 struct CallControlButton: View {
 
-	@Binding var isActive: Bool
+	// MARK: - Parameters
+
+	let title: String
 	let imageName: String
+	private(set) var backgroundColor: Color = .white
+	private(set) var foregroundColor: Color = .clear
+	@Binding var isActive: Bool
+
+	// MARK: - Private state
+
 	@State private var backgroundMaskScale: CGFloat = 0
 
-	init(
-		imageName: String,
-		isActive: Binding<Bool>
-	) {
-		self.imageName = imageName
-		self._isActive = isActive
-		updateMask()
+	enum AnimationPhase: CaseIterable {
+		case start, middle, end
 	}
+
+	// MARK: - Init
+
+	// MARK: - Body
 
     var body: some View {
 		VStack {
 			ZStack {
 				// Inactive
 				CallButton(
+					title: title,
 					imageName: imageName,
 					backgroundColor: backgroundColor.opacity(0.2),
 					foregroundColor: .white
@@ -69,25 +80,52 @@ struct CallControlButton: View {
 
 				// Active
 				CallButton(
+					title: title,
 					imageName: imageName,
 					backgroundColor: backgroundColor,
-					foregroundColor: .clear
+					foregroundColor: foregroundColor
 				)
 				.reverseMask { backgroundMask }
 			}
-			.onTapGesture {
-				isActive.toggle()
+
+			Text(title)
+				.font(.caption)
+				.foregroundColor(.white)
+				.padding(.top, 4)
+		}
+		.gesture(tapGesture)
+		.phaseAnimator(AnimationPhase.allCases, trigger: isActive) { content, phase in
+			let scaleEffect = switch phase {
+			case .start: 	1.0
+			case .middle: 	0.9
+			case .end: 		1.0
 			}
-			.onChange(of: isActive) { oldValue, newValue in
-				withAnimation(.spring()) {
-					updateMask()
-				}
+
+			content.scaleEffect(scaleEffect)
+		} animation: { phase in
+			switch phase {
+			case .start, .end: 	.bouncy
+			case .middle: 		.easeInOut(duration: 0.1)
 			}
-			.task {
+		}
+		.onChange(of: isActive) { oldValue, newValue in
+			withAnimation(.spring()) {
 				updateMask()
 			}
 		}
+		.task {
+			updateMask()
+		}
     }
+
+	// MARK: - Private
+
+	private var tapGesture: some Gesture {
+		TapGesture()
+			.onEnded { _ in
+				isActive.toggle()
+			}
+	}
 
 	private func updateMask() {
 		backgroundMaskScale = isActive ? 0 : 1
@@ -98,40 +136,44 @@ struct CallControlButton: View {
 			.opacity(1)
 			.scaleEffect(backgroundMaskScale)
 	}
-
-	private var backgroundColor: Color {
-		Color.white
-	}
 }
+
+// MARK: - Preview
 
 #Preview {
 	@Previewable @State var isSpeakerActive = false
 	@Previewable @State var isVideoActive = true
 	@Previewable @State var isMuteActive = false
+	@Previewable @State var isEndCallActive = true
 
 	ZStack {
 		Color.gray
 
 		HStack(spacing: 24) {
 			CallControlButton(
+				title: "speaker",
 				imageName: "speaker",
 				isActive: $isSpeakerActive
 			)
 
 			CallControlButton(
+				title: "video",
 				imageName: "video",
 				isActive: $isVideoActive
 			)
 
 			CallControlButton(
+				title: "mute",
 				imageName: "mute",
 				isActive: $isMuteActive
 			)
 
-			CallButton(
+			CallControlButton(
+				title: "end call",
 				imageName: "end",
 				backgroundColor: Color.red,
-				foregroundColor: Color.white
+				foregroundColor: Color.white,
+				isActive: $isEndCallActive
 			)
 		}
 	}
