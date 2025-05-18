@@ -13,10 +13,11 @@ struct ContentView: View {
 	@State var isVideoActive = true
 	@State var isMuteActive = false
 	@State var isEndCallActive = true
+	@State var gradientStyle: GlowGradientBackgroundView.Style = .connected
 
 	var body: some View {
 		ZStack {
-			Color.gray
+			GlowGradientBackgroundView(style: gradientStyle)
 				.edgesIgnoringSafeArea(.all)
 
 			VStack {
