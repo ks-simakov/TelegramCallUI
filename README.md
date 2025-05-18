@@ -3,6 +3,7 @@ SwiftUI flow for audio and video calls inspired by Telegram contest (https://con
 
 I was inspired by the Telegram contest and wanted to replicate a flow for audio and video calls with SwiftUI. This is a simple implementation that can be used as a tutorial or a starting point for your own project.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/8c9iXg6AM8Y?si=4xAHtDV-_f1tqeMR" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+![Watch the video](https://i.ytimg.com/vi/8c9iXg6AM8Y/0.jpg)
+(https://raw.githubusercontent.com/ks-simakov/TelegramCallUIrepository/Content/demo.mp4)
 
-🎥 [Watch demo video](https://youtube.com/shorts/8c9iXg6AM8Y)
+🎥 [Watch on youtube](https://youtube.com/shorts/8c9iXg6AM8Y)
