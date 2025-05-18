@@ -147,35 +147,39 @@ struct CallControlButton: View {
 	@Previewable @State var isEndCallActive = true
 
 	ZStack {
-		Color.gray
+		GlowGradientBackgroundView(style: .connecting)
+			.ignoresSafeArea()
 
-		HStack(spacing: 24) {
-			CallControlButton(
-				title: "speaker",
-				imageName: "speaker",
-				isActive: $isSpeakerActive
-			)
+		VStack {
+			Spacer()
 
-			CallControlButton(
-				title: "video",
-				imageName: "video",
-				isActive: $isVideoActive
-			)
+			HStack(spacing: 24) {
+				CallControlButton(
+					title: "speaker",
+					imageName: "speaker",
+					isActive: $isSpeakerActive
+				)
 
-			CallControlButton(
-				title: "mute",
-				imageName: "mute",
-				isActive: $isMuteActive
-			)
+				CallControlButton(
+					title: "video",
+					imageName: "video",
+					isActive: $isVideoActive
+				)
 
-			CallControlButton(
-				title: "end call",
-				imageName: "end",
-				backgroundColor: Color.red,
-				foregroundColor: Color.white,
-				isActive: $isEndCallActive
-			)
+				CallControlButton(
+					title: "mute",
+					imageName: "mute",
+					isActive: $isMuteActive
+				)
+
+				CallControlButton(
+					title: "end call",
+					imageName: "end",
+					backgroundColor: Color.red,
+					foregroundColor: Color.white,
+					isActive: $isEndCallActive
+				)
+			}
 		}
 	}
-	.ignoresSafeArea()
 }
