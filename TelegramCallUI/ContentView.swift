@@ -56,6 +56,15 @@ struct ContentView: View {
 				}
 			}
 		}
+		.task {
+			// Toggle gradient style every now and then
+			while true {
+				try! await Task.sleep(for: .seconds(2))
+				withAnimation(.easeInOut) {
+					gradientStyle = gradientStyle.toggle()
+				}
+			}
+		}
     }
 }
 

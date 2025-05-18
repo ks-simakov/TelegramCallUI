@@ -9,7 +9,7 @@ import SwiftUI
 
 struct GlowGradientBackgroundView: View {
 
-	enum Style {
+	enum Style: CaseIterable {
 		case connecting
 		case connected
 
