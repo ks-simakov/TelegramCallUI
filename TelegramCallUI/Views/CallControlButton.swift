@@ -91,7 +91,6 @@ struct CallControlButton: View {
 			Text(title)
 				.font(.caption)
 				.foregroundColor(.white)
-				.padding(.top, 4)
 		}
 		.gesture(tapGesture)
 		.phaseAnimator(AnimationPhase.allCases, trigger: isActive) { content, phase in

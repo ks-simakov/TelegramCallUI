@@ -9,9 +9,14 @@ import SwiftUI
 
 @main
 struct TelegramCallUIApp: App {
+
+	let callService = CallsService()
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(
+				viewModel: callService.startCall()
+			)
         }
     }
 }

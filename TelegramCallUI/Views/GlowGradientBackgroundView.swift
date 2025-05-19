@@ -12,6 +12,7 @@ struct GlowGradientBackgroundView: View {
 	enum Style: CaseIterable {
 		case connecting
 		case connected
+		case weakSignal
 
 		var backgroundColor: Color {
 			switch self {
@@ -19,6 +20,8 @@ struct GlowGradientBackgroundView: View {
 				return Color(#colorLiteral(red: 0.4344210059, green: 0.4770071453, blue: 0.917335001, alpha: 1))
 			case .connected:
 				return Color(#colorLiteral(red: 0.4274509804, green: 0.6588235294, blue: 0.6235294118, alpha: 1))
+			case .weakSignal:
+				return Color(#colorLiteral(red: 0.8986216784, green: 0.5163657392, blue: 0.8099736468, alpha: 1))
 			}
 		}
 
@@ -28,6 +31,8 @@ struct GlowGradientBackgroundView: View {
 				return Color(#colorLiteral(red: 0.892404896, green: 0.5077461059, blue: 0.9803921569, alpha: 1))
 			case .connected:
 				return Color(#colorLiteral(red: 0.6156862745, green: 0.7098039216, blue: 0.4862745098, alpha: 1))
+			case .weakSignal:
+				return Color(#colorLiteral(red: 0.9399974942, green: 0.6126023662, blue: 0.2732245686, alpha: 1))
 			}
 		}
 
@@ -37,6 +42,8 @@ struct GlowGradientBackgroundView: View {
 				return Color(#colorLiteral(red: 0.404628821, green: 0.6854452606, blue: 0.8924371778, alpha: 1))
 			case .connected:
 				return Color(#colorLiteral(red: 0.3563061953, green: 0.6742646098, blue: 0.7721881866, alpha: 1))
+			case .weakSignal:
+				return Color(#colorLiteral(red: 0.9132953286, green: 0.5848845088, blue: 0.3080942707, alpha: 1))
 			}
 		}
 	}
@@ -101,7 +108,7 @@ struct GlowGradientBackgroundView: View {
 
 #Preview {
     GlowGradientBackgroundView(
-		style: .connected
+		style: .weakSignal
 	)
 	.ignoresSafeArea()
 }
