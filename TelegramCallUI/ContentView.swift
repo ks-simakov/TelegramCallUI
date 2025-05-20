@@ -13,96 +13,91 @@ struct ContentView: View {
 	
 
 	var body: some View {
-		VStack(spacing: 8) {
-			HStack(spacing: 24) {
-				// TODO: Back button
-				Spacer()
-
-				switch viewModel.connectionState {
-				case .connected(let ongoingCallState):
-					Text(ongoingCallState.sharedKeyEmoji())
-						.font(.title2)
-						.foregroundColor(.white)
-						.transition(
-							.opacity.animation(.linear(duration: 0.2))
-							.combined(with: .scale(scale: 0.2).animation(.linear(duration: 0.2)))
-						)
-				default:
-					Spacer()
-				}
-			}
-			.safeAreaPadding(.horizontal)
-			.frame(height: 44)
-
-			Spacer().frame(height: 180)
-
-			UserAvatarView(imageName: "user-avatar")
-				.frame(width: 100, height: 100)
-
-			Text("Emma Walters")
-				.font(.title)
-				.foregroundColor(.white)
-
-			switch viewModel.connectionState {
-			case .connecting(let connectingState):
-				connectingStateView(connectingState)
-					.animation(.linear(duration: 0.2), value: viewModel.connectionState)
-					.transition(
-						.asymmetric(
-							insertion: .offset(y: 32).animation(.easeOut(duration: 0.3))
-								.combined(with: .scale(scale: 0.2).animation(.linear(duration: 0.2)))
-								.combined(with: .opacity.animation(.linear(duration: 0.3))),
-							removal: .opacity.animation(.linear(duration: 0.4))
-								.combined(with: .scale(scale: 0.2).animation(.linear(duration: 0.2)))
-						)
-					)
-			case .connected(let ongoingCallState):
-				ongoingCallStateView(ongoingCallState)
-			case .disconnected:
-				Text("Disconnected")
-					.font(.subheadline)
-					.foregroundColor(.white)
-			}
-
-			Spacer()
-
-			HStack(spacing: 24) {
-				CallControlButton(
-					title: "speaker",
-					imageName: "speaker",
-					isActive: $viewModel.isSpeakerActive
-				)
-
-				CallControlButton(
-					title: "video",
-					imageName: "video",
-					isActive: $viewModel.isVideoActive
-				)
-
-				CallControlButton(
-					title: "mute",
-					imageName: "mute",
-					isActive: $viewModel.isMuteActive
-				)
-
-				CallControlButton(
-					title: "end call",
-					imageName: "end",
-					backgroundColor: Color.red,
-					foregroundColor: Color.white,
-					isActive: $viewModel.isEndCallActive
-				)
-			}
-		}
-		.background(
+		ZStack {
 			GlowGradientBackgroundView(style: gradientStyle)
 				.edgesIgnoringSafeArea(.all)
 				.animation(.linear(duration: 0.2), value: viewModel.connectionState)
-		)
+
+			VStack(spacing: 8) {
+				navigationBarView()
+					.frame(height: 44)
+
+				Spacer().frame(height: 180)
+
+				UserAvatarView(imageName: "user-avatar")
+					.frame(width: 100, height: 100)
+
+				Text("Emma Walters")
+					.font(.title)
+					.foregroundColor(.white)
+
+				switch viewModel.connectionState {
+				case .connecting(let connectingState):
+					connectingStateView(connectingState)
+						.animation(.linear(duration: 0.2), value: viewModel.connectionState)
+						.transition(
+							.asymmetric(
+								insertion: .offset(y: 32).animation(.easeOut(duration: 0.3))
+									.combined(with: .scale(scale: 0.2).animation(.linear(duration: 0.2)))
+									.combined(with: .opacity.animation(.linear(duration: 0.3))),
+								removal: .opacity.animation(.linear(duration: 0.4))
+									.combined(with: .scale(scale: 0.2).animation(.linear(duration: 0.2)))
+							)
+						)
+				case .connected(let ongoingCallState):
+					ongoingCallStateView(ongoingCallState)
+				case .disconnected:
+					Text("Disconnected")
+						.font(.subheadline)
+						.foregroundColor(.white)
+				}
+
+				Spacer()
+
+				HStack(spacing: 24) {
+					CallControlButton(
+						title: "speaker",
+						imageName: "speaker",
+						isActive: $viewModel.isSpeakerActive
+					)
+
+					CallControlButton(
+						title: "video",
+						imageName: "video",
+						isActive: $viewModel.isVideoActive
+					)
+
+					CallControlButton(
+						title: "mute",
+						imageName: "mute",
+						isActive: $viewModel.isMuteActive
+					)
+
+					CallControlButton(
+						title: "end call",
+						imageName: "end",
+						backgroundColor: Color.red,
+						foregroundColor: Color.white,
+						isActive: $viewModel.isEndCallActive
+					)
+				}
+			}
+		}
 		.task {
 			viewModel.startTestChanges()
 		}
     }
+
+	@ViewBuilder
+	private func navigationBarView() -> some View {
+		switch viewModel.connectionState {
+		case .connected(let ongoingCallState):
+			CallNavigationBarView(ongoingCallState: ongoingCallState)
+
+		default:
+			Spacer()
+		}
+	}
 
 	@ViewBuilder
 	private func connectingStateView(
