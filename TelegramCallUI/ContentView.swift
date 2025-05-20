@@ -36,9 +36,10 @@ struct ContentView: View {
 
 			Spacer().frame(height: 180)
 
-			UserAvatarView()
+			UserAvatarView(imageName: "user-avatar")
+				.frame(width: 100, height: 100)
 
-			Text("John Doe")
+			Text("Emma Walters")
 				.font(.title)
 				.foregroundColor(.white)
 
